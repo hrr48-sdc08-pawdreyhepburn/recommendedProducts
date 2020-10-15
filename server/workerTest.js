@@ -37,8 +37,8 @@ if (isMainThread) {
   };
   let t1 = performance.now()
   const records = generateRecords(250);
-
-  fs.writeFile(`../data/random-data-${id}.json`, records, (err, results) => {
+  const recordsJSON = JSON.stringify(records);
+  fs.writeFile(`../data/random-data-${id}.json`, recordsJSON, (err, results) => {
     if (err) {
       console.log(err);
     } else {
