@@ -35,6 +35,7 @@ const RecommendedProducts = ({totalItems, itemsShown, heading}) => {
       axios.get(`http://localhost:3003/products/id/${productId}`)
         .then(results => {
           setAllItems(results.data.slice(offset, offset + numItems));
+          console.log(results.data.slice(offset, offset + numItems))
         });
     }
   }, []);
