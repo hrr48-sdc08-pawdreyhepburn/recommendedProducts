@@ -17,3 +17,8 @@ To run the provided tests using Jest, use the following command from its own ter
 
 Note: continuous integration has been implemented with CircleCI. Any pull requests to the master branch will be tested.
 
+## CRUD Endpoints
+`/api/products/:id, GET` => Gets single product matching id
+`/api/products, POST` => Creates a new product, expecting `{ id, title, brand, department, price, imageUrl, productUrl }` 
+`/api/products/:id, PUT`  => Updates product matching id, exchanging previous info with any of the provided following: `{ id, title, brand, department, price, imageUrl, productUrl }`
+`/api/products/:id, DELETE` => Delete product matching id
