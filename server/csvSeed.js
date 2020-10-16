@@ -36,8 +36,7 @@ if (isMainThread) {
 
     for (let i = 0; i < numRecords; i++) {
       let dataPoint =
-        `${faker.commerce.productName()}, ${brands[ Math.floor( Math.random() * brands.length ) ]}, ${departments[ Math.floor( Math.random() * departments.length ) ]}, ${Number(faker.commerce.price(0, 100)) - Math.ceil(Math.random() * 5) / 100}, https://twzkraus-fec-images.s3-us-west-1.amazonaws.com/
-        target-images/${i % 50}.jpg, /${i % 100 + 1}\n`
+        `${faker.commerce.productName()}, ${brands[ Math.floor( Math.random() * brands.length ) ]}, ${departments[ Math.floor( Math.random() * departments.length ) ]}, ${Number(faker.commerce.price(0, 100)) - Math.ceil(Math.random() * 5) / 100}, https://twzkraus-fec-images.s3-us-west-1.amazonaws.com/target-images/${i % 50}.jpg, /${i % 100 + 1}\n`
         writeStream.write(dataPoint);
     }
   };
