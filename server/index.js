@@ -11,9 +11,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 
-app.get('/', (req, res) => {
-  console.log('GOT a GET');
-});
+const formatName = (string) => {
+  return string[0].toUpperCase() + string.split('').slice(1).join('');
+};
+
+// Legacy function works by having a master endroute ping three other routes that also search the db for related items. Need to optimize to pull this from the db in one pull. This is FOUR requests per request. That is going to stack up very, very quickly
 
 app.get('/products/dept/:dept', (req, res) => {
   let formattedDept = formatName(req.params.dept);
@@ -55,8 +57,58 @@ app.get('/products/id/:productId', async (req, res) => {
 
 });
 
-const formatName = (string) => {
-  return string[0].toUpperCase() + string.split('').slice(1).join('');
-};
+// Extended functionality
+
+app.post('/api/products', (req, res) => {
+  const { id, title, brand, department, price, imageUrl, productUrl } = req.body;
+
+  RecommendedItem.create({ id, title, brand, department, price, imageUrl, productUrl })
+    .then((results) => {
+      res.send('success!', results);
+    })
+    .catch((err) => {
+      res.send('err adding item. Ensure object fits API requirements');
+    })
+})
+
+app.get('/api/products/:id', (req, res) => {
+
+  RecommendedItem.findOne({id: req.params.id})
+    .then((results) => {
+      if (results === null) {
+        res.send('no such item')
+      } else {
+        res.send(results);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send('err obtaining item')
+    })
+})
+
+app.put('/api/products/:id', (req, res) => {
+  let infoToUpdate = req.body;
+  RecommendedItem.update({id: req.params.id}, req.body)
+    .then((results) => {
+      res.json(results)
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json('no dice');
+    })
+})
+
+app.delete('/api/products/:id', (req, res) => {
+  RecommendedItem.deleteOne( {id: req.params.id} )
+    .then((results) => {
+      console.log(results);
+      res.json('item deleted')
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json('err deleting. Are you sure the item exists?')
+    })
+})
 
 module.exports = app;
