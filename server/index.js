@@ -60,7 +60,15 @@ app.get('/products/id/:productId', async (req, res) => {
 // Extended functionality
 
 app.post('/api/products', (req, res) => {
-  // Make a function to create a new product
+  const { id, title, brand, department, price, imageUrl, productUrl } = req.body;
+
+  RecommendedItem.create({ id, title, brand, department, price, imageUrl, productUrl })
+    .then((results) => {
+      res.send('success!', results);
+    })
+    .catch((err) => {
+      res.send('err adding item. Ensure object fits API requirements');
+    })
 })
 
 app.get('/api/products/:id', (req, res) => {
