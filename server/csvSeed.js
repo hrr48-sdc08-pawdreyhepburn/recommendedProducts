@@ -12,11 +12,9 @@ if (isMainThread) {
     if (err) {
       console.log(err);
     } else {
-      new Worker(__filename);
-      new Worker(__filename);
-      new Worker(__filename);
-      new Worker(__filename);
-      new Worker(__filename);
+      for (let i = 0; i < 5; i++) {
+        new Worker(__filename)
+      }
     }
   })
 
