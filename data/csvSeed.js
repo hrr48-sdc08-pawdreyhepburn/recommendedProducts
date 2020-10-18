@@ -7,7 +7,7 @@ const { performance } = require('perf_hooks');
 // console.log(v8.getHeapStatistics());
 
 if (isMainThread) {
-  const columns = 'title, brand, department, price, imageUrl, productUrl\n'
+  const columns = 'title,brand,department,price,imageUrl,productUrl\n'
   let brands = new Set();
   let departments = new Set();
 
@@ -18,7 +18,7 @@ if (isMainThread) {
 
   brands = Array.from(brands);
   departments = Array.from(departments);
-  fs.writeFile('./brands.csv', brands, (err, results) => {
+  fs.writeFile(`${__dirname}/brands.csv`, brands, (err, results) => {
     if (err) {
       console.log(`something went wrong with brands, ${err}`)
     } else {
@@ -26,7 +26,7 @@ if (isMainThread) {
     }
   });
 
-  fs.writeFile('./departments.csv', departments, (err, results) => {
+  fs.writeFile(`${__dirname}/departments.csv`, departments, (err, results) => {
     if (err) {
       console.log(`something went wrong with departments, ${err}`)
     } else {
@@ -35,7 +35,7 @@ if (isMainThread) {
   });
 
 
-  fs.writeFile('../data/random-data.csv', columns, (err) => {
+  fs.writeFile(`${__dirname}/random-data.csv`, columns, (err) => {
     if (err) {
       console.log(err);
     } else {
@@ -51,13 +51,13 @@ if (isMainThread) {
   console.log(`worker ${id} up and running`)
   let t1 = performance.now();
   const { brandsLength, departmentsLength } = require('worker_threads').workerData;
-  const writeStream = fs.createWriteStream('../data/random-data.csv', {flags: 'a'});
+  const writeStream = fs.createWriteStream(`${__dirname}/random-data.csv`, {flags: 'a'});
   const generateRecords = function(numRecords) {
     let records = '';
 
 
     for (let i = 0; i < numRecords; i++) {
-      writeStream.write(`${faker.commerce.productName()}, ${ Math.floor( Math.random() * brandsLength ) }, ${ Math.floor( Math.random() * departmentsLength ) }, ${Number(faker.commerce.price(0, 100)) - Math.ceil(Math.random() * 5) / 100}, https://twzkraus-fec-images.s3-us-west-1.amazonaws.com/target-images/${i % 50}.jpg, /${i % 100 + 1}\n`);
+      writeStream.write(`${faker.commerce.productName()},${ Math.floor( Math.random() * brandsLength ) },${ Math.floor( Math.random() * departmentsLength ) },${Number(faker.commerce.price(0, 100)) - Math.ceil(Math.random() * 5) / 100},https://twzkraus-fec-images.s3-us-west-1.amazonaws.com/target-images/${i % 50}.jpg,/${i % 100 + 1}\n`);
     }
   };
 
