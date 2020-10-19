@@ -22,3 +22,8 @@ Note: continuous integration has been implemented with CircleCI. Any pull reques
 - `/api/products, POST` => Creates a new product, expecting `{ id, title, brand, department, price, imageUrl, productUrl }` 
 - `/api/products/:id, PUT`  => Updates product matching id, exchanging previous info with any of the provided following: `{ id, title, brand, department, price, imageUrl, productUrl }`
 - `/api/products/:id, DELETE` => Delete product matching id
+
+## Postgres DB
+
+- `data/csvSeed.js` contains the code needed to generate the three CSV files used for data
+- `db/postgresSeed.js` contains the code needed to seed postgres via the CSV files created on the previous
