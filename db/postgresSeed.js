@@ -80,6 +80,3 @@ pool.query('DROP TABLE IF EXISTS departments')
   .catch((err) => {
     console.log('err loading departments table: ', err);
   })
-
-//  foreign key (dept_id) references departments (id)
-// foreign key (brand_id) references brands (id)
