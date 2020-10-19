@@ -18,7 +18,7 @@ if (isMainThread) {
 
   brands = Array.from(brands);
   departments = Array.from(departments);
-  fs.writeFile(`${__dirname}/brands.csv`, brands, (err, results) => {
+  fs.writeFile(`${__dirname}/brands.csv`, brands.join('\n'), (err, results) => {
     if (err) {
       console.log(`something went wrong with brands, ${err}`)
     } else {
@@ -26,7 +26,7 @@ if (isMainThread) {
     }
   });
 
-  fs.writeFile(`${__dirname}/departments.csv`, departments, (err, results) => {
+  fs.writeFile(`${__dirname}/departments.csv`, departments.join('\n'), (err, results) => {
     if (err) {
       console.log(`something went wrong with departments, ${err}`)
     } else {
@@ -57,7 +57,7 @@ if (isMainThread) {
 
 
     for (let i = 0; i < numRecords; i++) {
-      writeStream.write(`${faker.commerce.productName()},${ Math.floor( Math.random() * brandsLength ) },${ Math.floor( Math.random() * departmentsLength ) },${Number(faker.commerce.price(0, 100)) - Math.ceil(Math.random() * 5) / 100},https://twzkraus-fec-images.s3-us-west-1.amazonaws.com/target-images/${i % 50}.jpg,/${i % 100 + 1}\n`);
+      writeStream.write(`${faker.commerce.productName()},${ Math.floor( Math.random() * brandsLength + 1 ) },${ Math.floor( Math.random() * departmentsLength + 1 ) },${Number(faker.commerce.price(0, 100)) - Math.ceil(Math.random() * 5) / 100},https://twzkraus-fec-images.s3-us-west-1.amazonaws.com/target-images/${i % 50}.jpg,/${i % 100 + 1}\n`);
     }
   };
 
