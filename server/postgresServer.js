@@ -3,7 +3,7 @@ const path = require('path');
 const axios = require('axios');
 const cors = require('cors');
 const app = express();
-const { getAll, updateProduct } = require('./controllers/postgres.js')
+const { getAll, insertProduct, updateProduct, deleteProduct } = require('./controllers/postgres.js')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -14,15 +14,7 @@ app.use(express.static(path.join(__dirname, '..', 'dist')));
 
 
 app.post('/api/products', (req, res) => {
-  const { id, title, brand, department, price, imageUrl, productUrl } = req.body;
-
-  RecommendedItem.create({ id, title, brand, department, price, imageUrl, productUrl })
-    .then((results) => {
-      res.send('success!', results);
-    })
-    .catch((err) => {
-      res.send('err adding item. Ensure object fits API requirements');
-    })
+  insertProduct(req, res);
 })
 
 app.get('/api/products/:id', (req, res) => {
@@ -34,15 +26,7 @@ app.patch('/api/products/:id', (req, res) => {
 })
 
 app.delete('/api/products/:id', (req, res) => {
-  RecommendedItem.deleteOne( {id: req.params.id} )
-    .then((results) => {
-      console.log(results);
-      res.json('item deleted')
-    })
-    .catch((err) => {
-      console.log(err);
-      res.json('err deleting. Are you sure the item exists?')
-    })
+  deleteProduct(req, res);
 })
 
 module.exports = app;
