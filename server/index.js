@@ -73,16 +73,27 @@ app.post('/api/products', (req, res) => {
 
 app.get('/api/products/:id', (req, res) => {
   let t1 = performance.now()
-  db.query('SELECT * FROM products WHERE dept_id=$1 AND price BETWEEN 10 and 20 ORDER BY id DESC LIMIT 14;', [req.params.id])
+  const { id } = req.params;
+  db.query('SELECT brand_id, dept_id, price FROM products WHERE id=$1', [ id ])
     .then((results) => {
-      console.log(results.rows.length);
-      res.send(results.rows);
-      let t2 = performance.now();
-      console.log(`query took ${ t2 - t1 } ms`)
+      const { brand_id, dept_id, price } = results.rows[0];
+      console.log(brand_id, dept_id);
+      db.query('SELECT * FROM products WHERE (brand_id=$2 OR dept_id=$1) AND id!=$3 AND price BETWEEN ($4 * 0.1) and ($4 * 1.1) ORDER BY dept_id=$1 ASC LIMIT 35;', [dept_id, brand_id, id, price])
+      .then((results) => {
+        console.log(results.rows.length);
+        res.send(results.rows);
+        let t2 = performance.now();
+        console.log(`query took ${ t2 - t1 } ms`)
+      })
+      .catch((err) => {
+        console.log(`error grabbing data ${err}`)
+      })
     })
     .catch((err) => {
-      console.log(`error grabbing data ${err}`)
+      console.log(err);
+      res.send('error finding current id')
     })
+
 })
 
 app.put('/api/products/:id', (req, res) => {
