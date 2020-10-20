@@ -105,4 +105,7 @@ dist
 .tern-port
 
 # randomly generated data
-random-data.csv
+*.csv
+
+# db information
+dbInfo.js
