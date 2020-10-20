@@ -1,10 +1,10 @@
 const express = require('express');
-const RecommendedItem = require('../database/RecommendedItem.js');
+const db = require('../db');
 const path = require('path');
 const axios = require('axios');
 const cors = require('cors');
-
 const app = express();
+const { performance } = require('perf_hooks');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -72,18 +72,16 @@ app.post('/api/products', (req, res) => {
 })
 
 app.get('/api/products/:id', (req, res) => {
-
-  RecommendedItem.findOne({id: req.params.id})
+  let t1 = performance.now()
+  db.query('SELECT * FROM products WHERE dept_id=$1 AND price BETWEEN 10 and 20 ORDER BY id DESC LIMIT 14;', [req.params.id])
     .then((results) => {
-      if (results === null) {
-        res.send('no such item')
-      } else {
-        res.send(results);
-      }
+      console.log(results.rows.length);
+      res.send(results.rows);
+      let t2 = performance.now();
+      console.log(`query took ${ t2 - t1 } ms`)
     })
     .catch((err) => {
-      console.log(err);
-      res.send('err obtaining item')
+      console.log(`error grabbing data ${err}`)
     })
 })
 

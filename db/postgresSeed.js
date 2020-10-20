@@ -6,22 +6,28 @@ pool.query('DROP TABLE IF EXISTS products')
     console.log('products seeding kicked off')
     let t1 = performance.now()
     // create primary products table
-    pool.query('CREATE TABLE products (id serial PRIMARY KEY, title VARCHAR(255) NOT NULL, price NUMERIC(5, 2) NOT NULL, image_url VARCHAR(255) NOT NULL, productURL VARCHAR(255) NOT NULL, dept_id INT NOT NULL, brand_id INT NOT NULL);')
+    pool.query('CREATE TABLE products (id serial, title VARCHAR(255) NOT NULL, price NUMERIC(5, 2) NOT NULL, image_url VARCHAR(255) NOT NULL, productURL VARCHAR(255) NOT NULL, dept_id INT NOT NULL, brand_id INT NOT NULL);')
     .then((results) => {
       // seed primary products table
       console.log('created products table');
       pool.query(`COPY products(title, brand_id, dept_id, price, image_url, producturl) from '${__dirname}/../data/random-data.csv' delimiter ',' csv header;`)
       .then((results) => {
-        pool.query('ALTER TABLE products add foreign key (dept_id) references departments (id), add foreign key (brand_id) references brands (id)')
+        pool.query('ALTER TABLE products add foreign key (dept_id) references departments (id), add foreign key (brand_id) references brands (id), add primary key (id);')
           .then((results) => {
             let t3 = performance.now();
-            console.log(`Foreign key constraints finished ${t3 - t2} seconds after products load`)
+            console.log(`Foreign && Primary key constraints finished ${t3 - t2} seconds after products load`)
           })
           .catch((err) => {
             console.log(err);
           })
-        let t2 = performance.now();
-        console.log(`Loaded ${results.rowCount} into products table in ${t2 - t1} ms`);
+          let t2 = performance.now();
+          console.log(`Loaded ${results.rowCount} into products table in ${t2 - t1} ms`);
+          pool.query('CREATE INDEX ON products (brand_id);')
+            .then((results) => {
+              console.log('create index brand_id');
+              console.log(results);
+            })
+          pool.query('CREATE INDEX ON products (dept_id);')
       })
     })
     .catch((err) => {
