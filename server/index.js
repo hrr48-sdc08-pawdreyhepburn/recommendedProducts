@@ -73,9 +73,9 @@ app.post('/api/products', (req, res) => {
 
 app.get('/api/products/:id', (req, res) => {
   let t1 = performance.now()
-  db.query('SELECT * FROM products where id=$1', [req.params.id])
+  db.query('SELECT * FROM products WHERE dept_id=$1 AND price BETWEEN 10 and 20 ORDER BY id DESC LIMIT 14;', [req.params.id])
     .then((results) => {
-      console.log(results);
+      console.log(results.rows.length);
       res.send(results.rows);
       let t2 = performance.now();
       console.log(`query took ${ t2 - t1 } ms`)
