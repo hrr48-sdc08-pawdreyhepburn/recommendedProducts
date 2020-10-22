@@ -1,1 +1,0 @@
-docker run --name my-cassandra --network cassandra-net -d cassandra:latest
