@@ -2,12 +2,10 @@ const fs = require('fs');
 const faker = require('faker');
 const { Worker, isMainThread } = require('worker_threads');
 const { performance } = require('perf_hooks');
-// const v8 = require('v8');
 
-// console.log(v8.getHeapStatistics());
 
 if (isMainThread) {
-  const columns = 'id,title,brand,department,price,imageUrl,productUrl\n'
+  const columns = 'title,brand,department,price,imageUrl,productUrl\n'
   let brands = new Set();
   let departments = new Set();
 
@@ -34,7 +32,6 @@ if (isMainThread) {
     }
   });
 
-
   fs.writeFile(`${__dirname}/random-data.csv`, columns, (err) => {
     if (err) {
       console.log(err);
@@ -44,8 +41,6 @@ if (isMainThread) {
       }
     }
   })
-
-
 } else {
   const id = require('worker_threads').threadId
   console.log(`worker ${id} up and running`)
@@ -53,22 +48,13 @@ if (isMainThread) {
   const { brandsLength, departmentsLength } = require('worker_threads').workerData;
   const writeStream = fs.createWriteStream(`${__dirname}/random-data.csv`, {flags: 'a'});
   const generateRecords = function(numRecords) {
-    let records = '';
 
-    let currentId = (id - 1) * 2000000;
     for (let i = 0; i < numRecords; i++) {
-      writeStream.write(`${currentId},${faker.commerce.productName()},${ Math.floor( Math.random() * brandsLength + 1 ) },${ Math.floor( Math.random() * departmentsLength + 1 ) },${Number(faker.commerce.price(0, 100)) - Math.ceil(Math.random() * 5) / 100},https://twzkraus-fec-images.s3-us-west-1.amazonaws.com/target-images/${i % 50}.jpg,/${i % 100 + 1}\n`);
-
-      currentId++;
+      writeStream.write(`${faker.commerce.productName()},${ Math.floor( Math.random() * brandsLength + 1 ) },${ Math.floor( Math.random() * departmentsLength + 1 ) },${Number(faker.commerce.price(0, 100)) - Math.ceil(Math.random() * 5) / 100},https://twzkraus-fec-images.s3-us-west-1.amazonaws.com/target-images/${i % 50}.jpg,/${i % 100 + 1}\n`);
     }
-
   };
 
-  let numOfRecords = 2000000;
-
-
-  generateRecords(numOfRecords);
+  generateRecords(2000000);
   let t2 = performance.now();
-
   console.log(`worker ${id} wrote ${numOfRecords} records in ${t2 - t1} milliseconds`);
 }
