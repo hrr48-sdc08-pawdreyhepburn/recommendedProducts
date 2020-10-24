@@ -1,6 +1,8 @@
 const pool = require('./index.js');
 const { performance } = require('perf_hooks')
 
+// THIS IS MADE TO CALL OUT ROOT IN THE DATABASE...IDK IF I WANNA KEEP IT LIKE THIS
+
 pool.query('DROP TABLE IF EXISTS products')
   .then((results) => {
     console.log('products seeding kicked off')
@@ -10,7 +12,7 @@ pool.query('DROP TABLE IF EXISTS products')
     .then((results) => {
       // seed primary products table
       console.log('created products table');
-      pool.query(`COPY products(title, brand_id, dept_id, price, image_url, producturl) from '${__dirname}/../data/random-data.csv' delimiter ',' csv header;`)
+      pool.query(`COPY products(title, brand_id, dept_id, price, image_url, producturl) from '/random-data.csv' delimiter ',' csv header;`)
       .then((results) => {
         pool.query('ALTER TABLE products add foreign key (dept_id) references departments (id), add foreign key (brand_id) references brands (id), add primary key (id);')
           .then((results) => {
@@ -23,11 +25,10 @@ pool.query('DROP TABLE IF EXISTS products')
           let t2 = performance.now();
           console.log(`Loaded ${results.rowCount} into products table in ${t2 - t1} ms`);
           pool.query('CREATE INDEX ON products (brand_id);')
-            .then((results) => {
-              console.log('create index brand_id');
-              console.log(results);
-            })
           pool.query('CREATE INDEX ON products (dept_id);')
+      })
+      .catch((err) => {
+        console.log('error on products table seed: ', err)
       })
     })
     .catch((err) => {
@@ -43,14 +44,14 @@ pool.query('DROP TABLE IF EXISTS brands')
       .then((results) => {
         console.log('created brands table')
         // seed brand names table different delimiter since brands have commas in their name...
-        pool.query(`COPY brands(name) from '${__dirname}/../data/brands.csv' delimiter '|' CSV;`)
+        pool.query(`COPY brands(name) from '/brands.csv' delimiter '|' CSV;`)
         .then((results) => {
           // measure performances
           let t2 = performance.now();
           console.log(`Loaded ${results.rowCount} into brands table in ${t2 - t1} ms`);
         })
         .catch((err) => {
-          console.log('err loading departments table: ', err);
+          console.log('err loading brands table: ', err);
         })
       })
       .catch((err) => {
@@ -69,7 +70,7 @@ pool.query('DROP TABLE IF EXISTS departments')
       .then((results) => {
       console.log('created departments table');
         // seed brand names table
-        pool.query(`COPY departments(name) from '${__dirname}/../data/departments.csv' delimiter ',' CSV;`)
+        pool.query(`COPY departments(name) from '/departments.csv' delimiter ',' CSV;`)
           .then((results) => {
             // measure performances
             let t2 = performance.now();

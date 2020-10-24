@@ -1,10 +1,10 @@
 const { Pool } = require('pg')
-const { user, password, database } = require('../dbInfo');
+const { user, password, database } = require('./dbInfo');
 const { performance } = require('perf_hooks');
 
 const pool = new Pool({
   user,
-  host: 'localhost',
+  host: '44.237.178.98',
   database,
   password,
   port: 5432,
