@@ -3,7 +3,7 @@ const path = require('path');
 const axios = require('axios');
 const cors = require('cors');
 const app = express();
-const { getAll, insertProduct, updateProduct, deleteProduct } = require('./controllers/cassandra.js')
+const { getAll, insertProduct, updateProduct, deleteProduct } = require('./controllers/postgres.js')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
