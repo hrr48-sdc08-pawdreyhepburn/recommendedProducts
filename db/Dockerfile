@@ -1,11 +1,17 @@
 FROM postgres:latest AS sdc
 
-ENV POSTGRES_PASSWORD=Gohan123
+COPY ./docker-entrypoint-initdb.d /docker-entrypoint-initdb.d
+
+ENV POSTGRES_PASSWORD=Gohan123 POSTGRES_DB=sdc
 
 WORKDIR /db
 
-COPY
-module.exports = {
-  user: 'postgres',
-  database: 'sdc',
-  password: 'Gohan123',
+VOLUME /app-data
+
+EXPOSE 5432
+
+
+COPY . .
+
+
+# RUN psql -U postgres -p

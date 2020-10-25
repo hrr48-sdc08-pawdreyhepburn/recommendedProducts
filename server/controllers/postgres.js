@@ -1,21 +1,16 @@
-const pool = require('../../db/postgres')
+const pool = require('../../db')
 const { performance } = require('perf_hooks');
 
 module.exports = {
   getAll: (req, res) => {
-    let t1 = performance.now()
     const { id } = req.params;
 
     pool.query('SELECT brand_id, dept_id, price FROM products WHERE id=$1', [ id ])
       .then((results) => {
         const { brand_id, dept_id, price } = results.rows[0];
-
         pool.query('SELECT * FROM products WHERE (brand_id=$2 OR dept_id=$1) AND NOT id=$4 AND price BETWEEN ($3 * 0.1) and ($3 * 1.1) LIMIT 35;', [dept_id, brand_id, price, id])
         .then((results) => {
           res.send(results.rows);
-
-          let t2 = performance.now();
-          console.log(`getAll query took ${ t2 - t1 } ms`)
         })
         .catch((err) => {
           console.log(`error grabbing data ${err}`)
@@ -33,10 +28,7 @@ module.exports = {
     const queryArgs = [ title, price, image_url, producturl, dept_id, brand_id ]
     pool.query('INSERT INTO products(title, price, image_url, producturl, dept_id, brand_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', queryArgs)
       .then((results) => {
-        let t2 = performance.now();
-        console.log(results);
         res.send('success!')
-        console.log(`inserted product in ${ t2 - t1 } ms`)
       })
       .catch((err) => {
         console.log(err);
