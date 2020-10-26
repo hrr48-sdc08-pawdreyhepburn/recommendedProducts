@@ -1,0 +1,10 @@
+node_modules/
+.env
+.env.test
+*.csv
+dbInfo.js
+newrelic.js
+newrelic_agent.log
+db/data/
+dbSeed.js
+dbInfo.js
