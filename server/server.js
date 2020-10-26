@@ -3,11 +3,7 @@ const path = require('path');
 const axios = require('axios');
 const cors = require('cors');
 const app = express();
-<<<<<<< HEAD:server/postgresServer.js
-const httpRequests = require('./controllers/postgres.js')
-=======
 const { getAll, insertProduct, updateProduct, deleteProduct } = require('./controllers/postgres.js')
->>>>>>> Refactor directory for cleaner code:server/server.js
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
