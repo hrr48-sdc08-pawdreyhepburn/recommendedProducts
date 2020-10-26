@@ -8,10 +8,6 @@ WORKDIR /db
 
 VOLUME /app-data
 
-EXPOSE 5432
-
+EXPOSE 5432:5432
 
 COPY . .
-
-
-# RUN psql -U postgres -p

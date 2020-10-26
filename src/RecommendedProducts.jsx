@@ -13,7 +13,7 @@ const RecommendedProducts = ({totalItems, itemsShown, heading}) => {
   }
 
   // parse information from window pathname
-  let productId = window.location.pathname.slice(1) || 1;
+  let productId = window.location.pathname.slice(10) || 1;
 
   const [selectedDot, setSelectedDot] = useState(0);
   const [numItems, setNumItems] = useState(totalItems || 24);
@@ -31,8 +31,9 @@ const RecommendedProducts = ({totalItems, itemsShown, heading}) => {
   }
 
   useEffect(() => {
+    console.log(productId)
     if (Number.isInteger(parseInt(productId))) {
-      axios.get(`http://localhost:3003/products/id/${productId}`)
+      axios.get(`http://localhost:3003/api/products/${productId}`)
         .then(results => {
           setAllItems(results.data.slice(offset, offset + numItems));
           console.log(results.data.slice(offset, offset + numItems))
