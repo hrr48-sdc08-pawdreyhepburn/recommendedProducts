@@ -4,7 +4,7 @@ const { performance } = require('perf_hooks');
 
 const pool = new Pool({
   user,
-  host: '44.237.178.98',
+  host: 'localhost',
   database,
   password,
   port: 5432,

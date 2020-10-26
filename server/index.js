@@ -1,3 +1,4 @@
+require('newrelic')
 const app = require('./postgresServer.js');
 const PORT = 3003;
 
