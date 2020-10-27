@@ -6,8 +6,8 @@
   "scripts": {
     "test": "jest",
     "seed": "node database/seed.js",
-    "start": "nodemon server/start.js",
-    "build": "webpack"
+    "start": "node server",
+    "build": "webpack -p"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
     "faker": "^5.1.0",
     "fs": "0.0.1-security",
     "mongoose": "^5.10.7",
+    "newrelic": "^6.13.2",
     "nodemon": "^2.0.4",
     "pg": "^8.4.1",
     "pg-hstore": "^2.3.3",

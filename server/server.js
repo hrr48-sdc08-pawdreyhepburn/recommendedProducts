@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use('/products/*', express.static(path.join(__dirname, '..', 'dist')));
-app.use('/', express.static(path.join(__dirname, '..', 'dist')));
+app.use('/', express.static(path.join(__dirname, '..', 'client', 'dist')));
 
 app.post('/api/products', (req, res) => {
   insertProduct(req, res);

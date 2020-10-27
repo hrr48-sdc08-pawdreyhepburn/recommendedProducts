@@ -2,9 +2,8 @@ node_modules/
 .env
 .env.test
 *.csv
-dbInfo.js
-newrelic.js
+db/dbInfo.js
 newrelic_agent.log
 db/data/
-dbSeed.js
-dbInfo.js
+db/dbSeed.js
+

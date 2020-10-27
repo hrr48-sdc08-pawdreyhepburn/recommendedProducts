@@ -6,8 +6,7 @@ module.exports = {
     filename: 'main.js',
     path: path.resolve(__dirname, './client/dist'),
   },
-  mode: 'development',
-  watch: true,
+  mode: 'production',
   module: {
     rules: [
       {
