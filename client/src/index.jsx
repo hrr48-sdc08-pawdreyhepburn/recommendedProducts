@@ -1,10 +1,5 @@
-import RecommendedProducts from './RecommendedProducts.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './components/App.jsx'
 
-ReactDOM.render(
-  <div>
-    <RecommendedProducts heading={'More to Consider'}/>
-    <RecommendedProducts heading={'Similar items'} totalItems={11}/>
-  </div>,
-document.getElementById('RecommendedProducts'));
+ReactDOM.render(<App />, document.getElementById('RecommendedProducts'));
