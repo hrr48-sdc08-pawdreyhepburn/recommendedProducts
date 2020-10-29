@@ -1,15 +1,24 @@
 const express = require('express');
+const app = express();
+const compression = require('compression')
+
 const path = require('path');
 const axios = require('axios');
 const cors = require('cors');
-const app = express();
 const { getAll, insertProduct, updateProduct, deleteProduct } = require('./controllers/postgres.js')
 
+
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use('/products/*', express.static(path.join(__dirname, '..', 'dist')));
+app.use(compression());
+app.use('/products/*', express.static(path.join(__dirname, '..', 'client', 'dist')));
 app.use('/', express.static(path.join(__dirname, '..', 'client', 'dist')));
+
+
+app.get('/loaderio-*', async (req, res) => {
+  res.status(200).send(req.originalUrl.slice(1, -1));
+});
 
 app.post('/api/products', (req, res) => {
   insertProduct(req, res);

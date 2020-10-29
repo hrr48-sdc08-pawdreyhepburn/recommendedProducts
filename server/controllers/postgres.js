@@ -1,21 +1,16 @@
 const pool = require('../../db')
 const { performance } = require('perf_hooks');
 
+
+// commented out console logs for production
 module.exports = {
   getAll: (req, res) => {
     const { id } = req.params;
 
-    pool.query('SELECT brand_id, dept_id, price FROM products WHERE id=$1', [ id ])
+    pool.query('SELECT t1.id, t1.price, t1.producturl, t1.image_url FROM products AS t1 INNER JOIN products AS t2 ON t2.dept_id = t1.dept_id WHERE t2.id=$1 LIMIT 35', [ id ])
       .then((results) => {
-        const { brand_id, dept_id, price } = results.rows[0];
-        pool.query('SELECT * FROM products WHERE (brand_id=$2 OR dept_id=$1) AND NOT id=$4 AND price BETWEEN ($3 * 0.1) and ($3 * 1.1) LIMIT 35;', [dept_id, brand_id, price, id])
-        .then((results) => {
           res.send(results.rows);
         })
-        .catch((err) => {
-          console.log(`error grabbing data ${err}`)
-        })
-      })
       .catch((err) => {
         console.log(err);
         res.send('error finding current id')
@@ -31,7 +26,7 @@ module.exports = {
         res.send('success!')
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         res.send('err inserting new product into database');
       })
   },
@@ -53,17 +48,17 @@ module.exports = {
         pool.query('UPDATE products SET (title, price, image_url, producturl, dept_id, brand_id) = ($1, $2, $3, $4, $5, $6) WHERE id=$7', queryArgs)
           .then((results) => {
             let t2 = performance.now();
-            console.log(`update query took ${ t2 - t1 } ms`)
+            // console.log(`update query took ${ t2 - t1 } ms`)
             res.send('successfully updated product')
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
             res.send('Product found, but could not update for some reason... double check the data you are sending')
           })
 
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         res.send('error updating product. Are you sure it exists?')
       })
   },
@@ -73,10 +68,10 @@ module.exports = {
       .then((results) => {
         let t2 = performance.now()
         res.send('succesfully deleted')
-        console.log(`delete query completed in ${ t2 - t1 } ms`);
+        // console.log(`delete query completed in ${ t2 - t1 } ms`);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         res.send('Error deleting product; are you sure it exists?');
       })
   }
