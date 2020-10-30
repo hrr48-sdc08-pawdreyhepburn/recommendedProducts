@@ -1,4 +1,4 @@
-import 'newrelic'
+// import 'newrelic'
 import app from './server.js';
 const PORT = 3003;
 

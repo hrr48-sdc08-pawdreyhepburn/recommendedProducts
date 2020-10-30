@@ -1,16 +1,14 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
-module.exports = {
-  entry: './server/',
-  target: 'node',
-  externals: [nodeExternals()],
+const client = {
+  entry: './client/src/index.jsx',
   output: {
-    filename: 'main.js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, './client/dist'),
   },
-  mode: 'development',
-  watch: true,
+  mode: 'production',
+  // watch: true,
   module: {
     rules: [
       {
@@ -19,10 +17,43 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-react', '@babel/preset-env']
+            presets: ['@babel/preset-react', '@babel/preset-env'],
+            plugins: ['babel-plugin-styled-components']
           }
         }
       }
     ]
   }
 };
+
+const server = {
+  entry: './server',
+  target: 'node',
+  node: {
+    __dirname: false,
+  },
+  externals: [nodeExternals()],
+  output: {
+    filename: 'serverBundle.js',
+    path: path.resolve(__dirname, './server'),
+  },
+  mode: 'production',
+  // watch: true,
+  module: {
+    rules: [
+      {
+        test: /\jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react', '@babel/preset-env',],
+            plugins: ['babel-plugin-styled-components']
+          }
+        }
+      }
+    ]
+  }
+};
+
+module.exports = [ client, server];

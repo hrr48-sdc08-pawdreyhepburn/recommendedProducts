@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import RecommendedProducts from './RecommendedProducts.jsx';
-
+// import { GlobalStyle } from './Styles.jsx';
 
 const App = (props) => {
 
@@ -21,8 +21,9 @@ const App = (props) => {
 
   return (
     <div>
-    <RecommendedProducts allItems={allItems.slice(0, 24)} heading={'More to Consider'}/>
-    <RecommendedProducts allItems={allItems.slice(24, 35)} heading={'Similar items'} totalItems={11}/>
+      {/* <GlobalStyle /> */}
+      <RecommendedProducts allItems={allItems.slice(0, 24)} heading={'More to Consider'}/>
+      <RecommendedProducts allItems={allItems.slice(24, 35)} heading={'Similar items'} totalItems={11}/>
     </div>
   );
 }

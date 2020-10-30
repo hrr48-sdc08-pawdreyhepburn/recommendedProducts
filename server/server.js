@@ -10,8 +10,8 @@ import 'regenerator-runtime';
 
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-
 import App from '../client/src/components/App.jsx';
+import { ServerStyleSheet } from 'styled-components';
 
 
 app.use(express.json());
@@ -22,18 +22,23 @@ app.use('/', express.static(path.join(__dirname, '..', 'client', 'dist')));
 app.use('/products/*', express.static(path.join(__dirname, '..', 'client', 'dist')));
 
 app.get('/products/:id', (req, res) => {
-  const ssrender = ReactDOMServer.renderToString(<App />)
-  console.log(ssrender);
-  const indexFile = path.resolve('./client/dist/index.html');
+  const sheet = new ServerStyleSheet();
+  const body = ReactDOMServer.renderToString(sheet.collectStyles(<App />));
+  const styleTags = sheet.getStyleTags();
+  sheet.seal();
 
-  fs.readFile(indexFile, 'utf8', (err, data) => {
-    if (err) {
-      console.log(err)
-      res.status(500).send('couldnt read html file');
-    }
+  // const indexFile = path.resolve('./server/index.html');
+  const html = `
+  <!DOCTYPE html>
+  <html>
+    <head>${styleTags}</head>
+    <body>
+      <div id="RecommendedProducts">${body}</div>
+      <script src="/bundle.js"></script>
+    </body>
+  </html>`
 
-    res.send(data.replace('<div id="RecommendedProducts"></div>', `<div id="RecommendedProducts">${ssrender}</div>`));
-  })
+  res.send(html);
 })
 app.get('/loaderio-*', async (req, res) => {
   res.status(200).send(req.originalUrl.slice(1, -1));

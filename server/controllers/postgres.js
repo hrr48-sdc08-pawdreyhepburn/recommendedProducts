@@ -6,7 +6,7 @@ const { performance } = require('perf_hooks');
 module.exports = {
   getAll: (req, res) => {
     const { id } = req.params;
-
+    console.log('getall pinged')
     pool.query('SELECT t1.id, t1.price, t1.producturl, t1.image_url FROM products AS t1 INNER JOIN products AS t2 ON t2.dept_id = t1.dept_id WHERE t2.id=$1 LIMIT 35', [ id ])
       .then((results) => {
           res.send(results.rows);

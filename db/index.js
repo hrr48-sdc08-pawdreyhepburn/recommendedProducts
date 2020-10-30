@@ -3,9 +3,9 @@ const { performance } = require('perf_hooks');
 
 const pool = new Pool({
   user: 'postgres',
-  host: process.env.POSTGRES_URL,
+  host: '44.242.53.217',
   database: 'sdc',
-  password: process.env.POSTGRES_PASSWORD,
+  password: 'Gohan123',
   port: 5432,
 })
 

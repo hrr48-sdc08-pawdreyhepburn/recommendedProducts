@@ -5,9 +5,6 @@ import axios from 'axios';
 import {GlobalStyle, CenterTextBox, ItemsBox} from './Styles.jsx';
 
 const RecommendedProducts = ({totalItems, itemsShown, heading, allItems}) => {
-
-
-
   // parse information from window pathname
 
   const [selectedDot, setSelectedDot] = useState(0);
@@ -28,7 +25,6 @@ const RecommendedProducts = ({totalItems, itemsShown, heading, allItems}) => {
 
   return (
     <div>
-      <GlobalStyle />
       <ItemsBox>
         <CenterTextBox><h4>{heading}</h4></CenterTextBox>
         <div id="recommended-items">
