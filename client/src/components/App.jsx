@@ -5,13 +5,12 @@ import RecommendedProducts from './RecommendedProducts.jsx';
 
 const App = (props) => {
 
-  let productId = window.location.pathname.slice(10) || 1;
-
-
   const [allItems, setAllItems] = useState([]);
 
 
   useEffect(() => {
+    let productId = window.location.pathname.slice(10) || 1;
+
     if (Number.isInteger(parseInt(productId))) {
       axios.get(`/api/products/${productId}`)
         .then(results => {

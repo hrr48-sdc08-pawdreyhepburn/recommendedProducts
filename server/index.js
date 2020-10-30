@@ -1,5 +1,5 @@
-require('newrelic');
-const app = require('./server.js');
+import 'newrelic'
+import app from './server.js';
 const PORT = 3003;
 
 app.listen(PORT, () => {
