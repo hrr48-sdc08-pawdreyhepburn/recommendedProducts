@@ -5,7 +5,6 @@ import {RecList, NavButtonRight, NavButtonLeft} from './Styles.jsx';
 const List = ({listItems, handleClick, selectedDot, numVisible, numDots}) => {
   const minIVisible = selectedDot * numVisible;
   const maxIVisible = minIVisible + numVisible - 1;
-
   const onLeftmostPage = selectedDot === 0;
   const onRightmostPage = selectedDot === numDots - 1;
 
