@@ -34,7 +34,7 @@ This service listens on port 3003.
 
 At 4 ec2 services this application is capable of handling between 1200-1500 RPS with an average latency of about 80ms. Horizontal scaling is as easy as spinning up a new container with the _same_ variables on more ec2 instances. The only thing left is to create a load balancer. You can either use the AWS balancer, or for a simple, but further optimized load balancer you can create a further ec2 instance, download nginx, and place this in your `/etc/nginx/nginx.conf`:
 
-`user  nginx;
+```user  nginx;
 worker_processes  1;
 
 error_log  /var/log/nginx/error.log warn;
@@ -74,4 +74,4 @@ http {
     }
   }
 }
-`
+```
